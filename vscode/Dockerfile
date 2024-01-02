@@ -36,6 +36,20 @@ RUN curl -fsSL https://code-server.dev/install.sh | sh
 RUN apt-add-repository --yes --update ppa:ansible/ansible && \
     apt-get install -y ansible
 
+# # Install Go
+# ENV GO_VERSION 1.18
+# RUN wget https://golang.org/dl/go$GO_VERSION.linux-amd64.tar.gz && \
+#     tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz && \
+#     rm go$GO_VERSION.linux-amd64.tar.gz
+# ENV PATH $PATH:/usr/local/go/bin
+
+# # Install Hugo
+# RUN wget https://github.com/gohugoio/hugo/releases/download/v0.121.1/hugo_extended_0.121.1_Linux-64bit.tar.gz && \
+#     tar -xzf hugo_extended_0.121.1_Linux-64bit.tar.gz && \
+#     mv hugo /usr/local/bin/ && \
+#     rm hugo_extended_0.121.1_Linux-64bit.tar.gz
+ 
+
 # Install Terraform
 RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | \
     tee /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
@@ -51,6 +65,7 @@ WORKDIR /workspace
 
 # Expose the code-server port
 EXPOSE 8080
+
 
 # Start code-server in the workspace directory
 ENTRYPOINT ["code-server", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "--user-data-dir", "/workspace", "--extensions-dir", "/workspace/extensions"]
